@@ -26,9 +26,17 @@ object Mendler_Style {
     val outF_rank2 = new (Lambda[a => Mu[F]] ~> Lambda[a => F[Mu[F]]]) {
       override def apply[A](a: Lambda[a => Mu[F]][A]): Lambda[a => F[Mu[F]]][A] = outF(a)
     }
+
+    val id2c = new (Id ~>> C) {
+      override def apply[A](a: A): C = {
+        val mf2c: Mu[F] => C = (mf: Mu[F]) => mcata(phi)(mf)
+        mf2c(a.asInstanceOf[Mu[F]]) //TODO rm cast , isn't safe
+      }
+    }
+
     val mcata_rank2 = new (Lambda[a => Mu[F]] ~>> C) {
-      override def apply[A](a: Lambda[a => Mu[F]][A]): Const[C]#λ[A] = {
-        val r = phi(mcata(phi).asInstanceOf[Id ~>> C]) //TODO rm cast , isn't safe
+      override def apply[A](a: Lambda[a => Mu[F]][A]): C = {
+        val r: F ~>> C = phi(id2c)
         r(outF_rank2(a) : F[Mu[F]])
       }
     }

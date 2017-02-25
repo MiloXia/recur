@@ -67,7 +67,6 @@ object PFunctor {
   case class Pair[A, B](a: A, b: B) {
     def outl = a
     def outr = b
-    def curry = (x: A) => b
   }
 
   def mulFunctor[F[_]: TypeFunctor, G[_]: TypeFunctor] =

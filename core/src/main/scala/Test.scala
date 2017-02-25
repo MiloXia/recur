@@ -1,3 +1,4 @@
+
 object Test {
   def main(args: Array[String]) {
     Macros.hello
@@ -93,4 +94,76 @@ object PolyFunctor extends App {
   val l = Cons(1, Cons(2, Cons(3, Nil)))
   val rr = fold[Int](_ => 0, _ + _)(l)
   println(rr)
+}
+
+object Test_Initial_Fixed_Point extends App {
+  import algebra.Functor, algebra.F_Algebra.{Fix, mu, cata}
+  //type List[A] = μ(ListFFunctor[A])
+  trait ListF[+A, +B]
+  case object Nil extends ListF[Nothing, Nothing]
+  case class Cons[A, B](a: A, b: B) extends ListF[A, B]
+
+  //an endofunctor F
+  implicit def ListFFunctor[T] = new Functor[ListF[T, ?]] {
+    def map[A, B](fa: ListF[T, A])(f: A => B): ListF[T, B] = fa match {
+      case Nil => Nil
+      case Cons(a, b) => Cons(a, f(b))
+    }
+  }
+
+  type ListFInt[A] = ListF[Int, A]
+  def nil = mu[ListFInt[Nothing], ListFInt](Nil)
+  def cons[B](a: Int, b: B) = mu[ListFInt[B], ListFInt](Cons(a, b))
+
+  //algSum :: ListF Int Int -> Int
+  val algSum: ListFInt[Int] => Int = {
+    case Nil => 0
+    case Cons(e, acc) => e + acc
+  }
+
+  //lst :: Fix (ListF Int)
+  val lst: Fix[ListFInt] = cons(2, cons(3, cons(4, nil)))
+
+  val foldr = cata[ListFInt, Int](algSum)
+
+  println(foldr(lst)) //9
+
+  //test Mendler_Style
+  import algebra.~>>
+  import algebra.Mendler_Style.{mcata, MendlerAlgebra}
+
+  object ms_algSum extends MendlerAlgebra[ListFInt, Int] {
+    override def apply(v1: algebra.Id ~>> Int): ListFInt ~>> Int = {
+      val sum = new (ListFInt ~>> Int) {
+        override def apply[A](a: ListFInt[A]): Int = a match {
+          case Nil => 0
+          case Cons(e, acc) => e + v1(acc)
+        }
+      }
+      sum
+    }
+  }
+  val foldr2 = mcata[ListFInt, Int](ms_algSum)
+  println(foldr2(lst)) //9
+}
+
+object Test_T_homomorphisms extends App {
+  import algebra.PFunctor, algebra.PFunctor._
+
+  sealed trait List[+T]
+  case class Cons[T](hd: T, tl: List[T]) extends List[T]
+  sealed trait Nil extends List[Nothing]
+  case object Nil extends Nil
+
+  val pf = PFunctor[List[Int]]
+
+  def fold[B](g1: Unit => B, g2: (Int, B) => B)(l: List[Int]): B = l match {
+    case Nil => (g1 compose ((u: Unit) => pf.term(termName[Nil.type]).map(u)(fold(g1, g2)))) ()
+    case Cons(h, t) =>
+      val fmap_cata = (p: Pair[Int, List[Int]]) => pf.term(termName[Cons[Int]]).map(p)(fold(g1, g2)).asInstanceOf[Pair[Int, B]]
+      ((p: Pair[Int, List[Int]]) => g2(fmap_cata(p).outl, fmap_cata(p).outr)) (Pair(h, t))
+  }
+  val l = Cons(2, Cons(3, Cons(4, Nil)))
+  val res = fold[Int](_ => 0, _ + _)(l)
+  println(res) //9
 }
