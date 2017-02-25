@@ -120,14 +120,14 @@ In current version, as you can see, there are lots of boilerplate code need writ
 - Add `metamorphisms` for Abstract Data Types
 
 # References
-[Algebra of programming](http://dl.acm.org/citation.cfm?id=248932)
-http://citeseerx.ist.psu.edu/viewdoc/download;jsessionid=A48F549C76E5742B07A1BCCAC04DFDB9?
-http://usi-pl.github.io/lc/sp-2015/doc/Bird_Wadler.%20Introduction%20to%20Functional%20Programming.1ed.pdf
-http://citeseerx.ist.psu.edu/viewdoc/download;jsessionid=A48F549C76E5742B07A1BCCAC04DFDB9?doi=10.1.1.221.4281&rep=rep1&type=pdf
-http://web.engr.oregonstate.edu/~erwig/papers/CategoricalADT_AMAST98.pdf
-http://pdfs.semanticscholar.org/fec6/b29569eac1a340990bb07e90355efd2434ec.pdf
-http://www.cs.indiana.edu/cmcs/categories.pdf
-[Recursion schemes from comonads](http://dl.acm.org/citation.cfm?id=766517.766523)
-https://en.wikipedia.org/wiki/Category:Recursion_schemes
-https://en.wikipedia.org/wiki/Inductive_type
-[Generic Programming with Adjunctions](http://www.cs.ox.ac.uk/ralf.hinze/LN.pdf)
+- [Algebra of programming](http://dl.acm.org/citation.cfm?id=248932)
+- http://citeseerx.ist.psu.edu/viewdoc/download;jsessionid=A48F549C76E5742B07A1BCCAC04DFDB9?
+- http://usi-pl.github.io/lc/sp-2015/doc/Bird_Wadler.%20Introduction%20to%20Functional%20Programming.1ed.pdf
+- http://citeseerx.ist.psu.edu/viewdoc/download;jsessionid=A48F549C76E5742B07A1BCCAC04DFDB9?doi=10.1.1.221.4281&rep=rep1&type=pdf
+- http://web.engr.oregonstate.edu/~erwig/papers/CategoricalADT_AMAST98.pdf
+- http://pdfs.semanticscholar.org/fec6/b29569eac1a340990bb07e90355efd2434ec.pdf
+- http://www.cs.indiana.edu/cmcs/categories.pdf
+- [Recursion schemes from comonads](http://dl.acm.org/citation.cfm?id=766517.766523)
+- https://en.wikipedia.org/wiki/Category:Recursion_schemes
+- https://en.wikipedia.org/wiki/Inductive_type
+- [Generic Programming with Adjunctions](http://www.cs.ox.ac.uk/ralf.hinze/LN.pdf)
